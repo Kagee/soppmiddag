@@ -8,10 +8,18 @@ handlers:
 - url: /favicon\.ico
   static_files: static/images/favicon.ico
   upload: static/images/favicon\.ico
+  secure: always
 - url: /call
   script: call.application
+  secure: always
 - url: /sms
   script: sms.application
+  secure: always
+- url: /scrape
+  script: scrape.application
+  secure: always
+  login: admin
 - url: /.*
   static_files: static/info.html
   upload: static/info\.html
+  secure: always

@@ -10,10 +10,10 @@ class MainPage(webapp2.RequestHandler):
 		self.response.headers['Content-Type'] = 'text/plain'
 		self.response.write('Hello, Anders Einar!\n')
 		self.response.write("The twilio version is: " + twilio.__version__)
-		client = TwilioRestClient(config.ACCOUNT_SID, config.AUTH_TOKEN)
-		rv = client.sms.messages.create(to="+4791142170", from_="+4759440259", body="Hello Monkey!")
-		self.response.write(str(rv))
+		#client = TwilioRestClient(config.ACCOUNT_SID, config.AUTH_TOKEN)
+		#rv = client.sms.messages.create(to="+4791142170", from_="+4759440259", body="Hello Monkey!")
+		#self.response.write(str(rv))
 
 application = webapp2.WSGIApplication([
-    ('/', MainPage),
+    ('/sms', MainPage),
 ], debug=True)

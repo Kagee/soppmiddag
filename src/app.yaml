@@ -1,9 +1,17 @@
 application: soppmiddag
-version: 1
+version: 3
 runtime: python27
 api_version: 1
 threadsafe: false
 
 handlers:
+- url: /favicon\.ico
+  static_files: static/images/favicon.ico
+  upload: static/images/favicon\.ico
+- url: /call
+  script: call.application
+- url: /sms
+  script: sms.application
 - url: /.*
-  script: soppmiddag.application
+  static_files: static/info.html
+  upload: static/info\.html

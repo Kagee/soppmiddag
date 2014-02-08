@@ -4,3 +4,7 @@ lib/
 !lib/README.md
 .DS_Store
 config.py
+src/httplib2
+src/six.py
+src/twilio
+venv/

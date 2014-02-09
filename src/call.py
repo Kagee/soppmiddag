@@ -4,15 +4,28 @@ import twilio
 from twilio import twiml
 from twilio.rest import TwilioRestClient
 
-class MainPage(webapp2.RequestHandler):
+from twilio.util import RequestValidator
 
-	def get(self):
+class MainPage(webapp2.RequestHandler):
+	def post(self):
 		self.response.headers['Content-Type'] = 'text/plain'
-		self.response.write('Hello, Anders Einar!\n')
-		self.response.write("The twilio version is: " + twilio.__version__)
-		#client = TwilioRestClient(config.ACCOUNT_SID, config.AUTH_TOKEN)
-		#rv = client.sms.messages.create(to="+4791142170", from_="+4759440259", body="Hello Monkey!")
-		#self.response.write(str(rv))
+		#URL = self.request.url
+		url = 'https://soppmiddag.appspot.com/call'
+		url = 'http://offle.hild1.no:1593'
+		validator = RequestValidator(config.AUTH_TOKEN)
+		params = {}
+		for name in self.request.arguments():
+			params[name] = self.request.get(name);
+
+		#try:
+		#	signature = self.request.headers["X-Twilio-Signature"]
+		#except KeyError:
+		signature = '78tKL7bCCcE4/6LqWbAluYCxYfk='
+
+		if(validator.validate(url, params, signature)):
+			self.response.write("Valid\n")
+		else:
+			self.response.write("Invalid\n")		
 
 application = webapp2.WSGIApplication([
     ('/call', MainPage),

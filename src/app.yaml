@@ -1,8 +1,12 @@
 application: soppmiddag
-version: 3
+version: 4
 runtime: python27
 api_version: 1
 threadsafe: false
+
+libraries:
+- name: lxml
+  version: "2.3"
 
 handlers:
 - url: /favicon\.ico
@@ -15,10 +19,9 @@ handlers:
 - url: /sms
   script: sms.application
   secure: always
-- url: /scrape
-  script: scrape.application
+- url: /plaintext
+  script: plaintext.application
   secure: always
-  login: admin
 - url: /.*
   static_files: static/info.html
   upload: static/info\.html

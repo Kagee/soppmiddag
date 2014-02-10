@@ -1,31 +1,20 @@
 import config
 import webapp2
-import twilio
-from twilio import twiml
-from twilio.rest import TwilioRestClient
+import logging
+import trh
+import twilio.twiml
 
-from twilio.util import RequestValidator
-
-class MainPage(webapp2.RequestHandler):
+class MainPage(trh.TwilioRequestHandler):
 	def post(self):
-		self.response.headers['Content-Type'] = 'text/plain'
-		#URL = self.request.url
-		url = 'https://soppmiddag.appspot.com/call'
-		url = 'http://offle.hild1.no:1593'
-		validator = RequestValidator(config.AUTH_TOKEN)
-		params = {}
-		for name in self.request.arguments():
-			params[name] = self.request.get(name);
-
-		#try:
-		#	signature = self.request.headers["X-Twilio-Signature"]
-		#except KeyError:
-		signature = '78tKL7bCCcE4/6LqWbAluYCxYfk='
-
-		if(validator.validate(url, params, signature)):
-			self.response.write("Valid\n")
+		fromTwilio = self.valid()
+		if not fromTwilio:
+			self.response.set_staus(400, "Request failed validation")
 		else:
-			self.response.write("Invalid\n")		
+			logging.info("Call validated: %s" % (self.request.get("CallSid")))
+			resp = twilio.twiml.Response()
+			resp.say("Denne funksjonen er ikke klar", voice="alice", language="nb-NO")
+			self.response.headers['Content-Type'] = 'text/xml'
+			self.response.write(str(resp))
 
 application = webapp2.WSGIApplication([
     ('/call', MainPage),

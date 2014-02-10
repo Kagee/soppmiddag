@@ -1,34 +1,20 @@
 import config
 import webapp2
-import twilio
-from twilio import twiml
-from twilio.rest import TwilioRestClient
 import logging
-from twilio.util import RequestValidator
+import trh
+import twilio.twiml
 
-class MainPage(webapp2.RequestHandler):
+class MainPage(trh.TwilioRequestHandler):
 	def post(self):
-		self.response.headers['Content-Type'] = 'text/plain'
-		#URL = self.request.url
-		url = 'https://soppmiddag.appspot.com/sms'
-		validator = RequestValidator(config.AUTH_TOKEN)
-		params = {}
-		for name in self.request.arguments():
-			params[name] = self.request.get(name);
-
-		logging.info(params)
-
-		try:
-			signature = self.request.headers["X-Twilio-Signature"]
-			logging.info('X-Twilio-Signature: %s' % signature)
-		except KeyError:
-			signature = ''
-			logging.info('X-Twilio-Signature: Missing')
-
-		if (validator.validate(url, params, signature)):
-			print "True"
+		fromTwilio = self.valid()
+		if not fromTwilio:
+			self.response.set_staus(400, "Request failed validation")
 		else:
-			print "False"
+			logging.info("SMS validated: %s" % (self.request.get("MessageSid")))
+			resp = twilio.twiml.Response()
+			resp.message("Denne funksjonen er ikke klar")
+			self.response.headers['Content-Type'] = 'text/xml'
+			self.response.write(str(resp))
 
 application = webapp2.WSGIApplication([
     ('/sms', MainPage),

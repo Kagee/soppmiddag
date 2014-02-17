@@ -1,4 +1,3 @@
-#! /usr/bin/env python
 import lxml.html # parsing html
 import re # regexp
 import HTMLParser # resolve HTML entities
@@ -64,9 +63,12 @@ class SoppParser:
 			# same line,  but separated by a colon
 			day, lines[0] = lines[0].split(":")
 			dishes = [line.strip().replace("m/", "med ") for line in lines] # Remove extra whitespace around text.
-			logging.debug(day + ":", " eller ".join(dishes))
+			logging.debug(day + ":" + " eller ".join(dishes))
 			self.menu[weekday] = dishes;
 			weekday += 1
+
+	def getMenu(self):
+		return self.menu
 
 	def mergeDishes(self, dayNum):
 		dishes = self.menu[dayNum]
@@ -79,23 +81,24 @@ class SoppParser:
 			merged = "%s%s%s" % (", ".join(dishes[0:numDishes-1]),", eller ", dishes[numDishes-1])
 		return merged.capitalize()
 
-	def plainTextPrint(self):
+	def plainText(self):
 		days = ["Mandag","Tirsdag","Onsdag","Torsdag","Fredag"]
 		lines = []
 		for dayNum in range(0,5):
 			lines.append("%s;%s" % (days[dayNum], self.mergeDishes(dayNum)))
 		return "\n".join(lines)
 
-hig = SoppParser(config.SOPP_HIG)
-#hig = SoppParser("http://localhost:8000/hig.html")
-#hil = SoppParser(config.SOPP_HIL)
-#hig = SoppParser("http://fuu.bar/soppmiddag")
-#hig = SoppParser("http://offle.hild1.no/finnes/ikke")
-#hig = SoppParser("http://offle.hild1.no/~hildenae/files/static/IMG_20110622_185758.jpg")
-hig.scrape()
-hig.extract()
-hig.verify()
-hig.parse()
-print hig.plainTextPrint()
-#hig.print()
-#hil.print()
+if __name__ == "__main__":
+	hig = SoppParser(config.SOPP_HIG)
+	#hig = SoppParser("http://localhost:8000/hig.html")
+	#hil = SoppParser(config.SOPP_HIL)
+	#hig = SoppParser("http://fuu.bar/soppmiddag")
+	#hig = SoppParser("http://offle.hild1.no/finnes/ikke")
+	#hig = SoppParser("http://offle.hild1.no/~hildenae/files/static/IMG_20110622_185758.jpg")
+	hig.scrape()
+	hig.extract()
+	hig.verify()
+	hig.parse()
+	print hig.plainText()
+	#hig.print()
+	#hil.print()

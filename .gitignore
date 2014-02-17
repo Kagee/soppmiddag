@@ -7,4 +7,5 @@ config.py
 src/httplib2
 src/six.py
 src/twilio
+src/cssselect
 venv/

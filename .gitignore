@@ -3,7 +3,7 @@
 lib/
 !lib/README.md
 .DS_Store
-config.py
+secrets.py
 src/httplib2
 src/six.py
 src/twilio

@@ -1,4 +1,3 @@
-import config
 import webapp2
 import logging
 import trh

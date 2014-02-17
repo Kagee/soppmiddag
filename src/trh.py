@@ -1,4 +1,4 @@
-import config
+import secrets
 import logging
 import webapp2
 from twilio.util import RequestValidator

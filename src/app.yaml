@@ -6,7 +6,7 @@ threadsafe: false
 
 libraries:
 - name: lxml
-  version: "2.3"
+  version: "2.3.5"
 
 handlers:
 - url: /favicon\.ico

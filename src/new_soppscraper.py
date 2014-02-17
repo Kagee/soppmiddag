@@ -74,7 +74,7 @@ class SoppParser:
 		if numDishes == 1:
 			merged = dishes[0]
 		elif len(dishes) == 2:
-			merged = dishes[0] + " eller " + dishes[1]
+			merged = dishes[0] + ", eller " + dishes[1]
 		else:
 			merged = "%s%s%s" % (", ".join(dishes[0:numDishes-1]),", eller ", dishes[numDishes-1])
 		return merged.capitalize()
@@ -83,11 +83,11 @@ class SoppParser:
 		days = ["Mandag","Tirsdag","Onsdag","Torsdag","Fredag"]
 		lines = []
 		for dayNum in range(0,5):
-			lines.append("%s;%s\n" % (days[dayNum], self.mergeDishes(dayNum)))
+			lines.append("%s;%s" % (days[dayNum], self.mergeDishes(dayNum)))
 		return "\n".join(lines)
 
 hig = SoppParser(config.SOPP_HIG)
-hig = SoppParser("http://localhost:8000/hig.html")
+#hig = SoppParser("http://localhost:8000/hig.html")
 #hil = SoppParser(config.SOPP_HIL)
 #hig = SoppParser("http://fuu.bar/soppmiddag")
 #hig = SoppParser("http://offle.hild1.no/finnes/ikke")

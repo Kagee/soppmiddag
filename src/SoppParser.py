@@ -26,6 +26,9 @@ class SoppParser:
 		self.text = f.read()
 		f.close()
 
+	def getSourceText(self):
+		return self.text
+
 	def extract(self):
 		root = lxml.html.fromstring(self.text)
 		dinnerDiv = root.cssselect("div.module-article.turkis.clearfix")
@@ -68,14 +71,18 @@ class SoppParser:
 			day, lines[0] = lines[0].split(":")
 			dishes = [line.strip().replace("m/", "med ") for line in lines] # Remove extra whitespace around text.
 			logging.debug(day + ":" + " eller ".join(dishes))
-			self.menu[weekday] = dishes;
+			# We use str(int) so we can save and retrive as json
+			self.menu[str(weekday)] = dishes;
 			weekday += 1
 
 	def getMenu(self):
 		return self.menu
 
+	def setMenu(self, menu):
+		self.menu = menu
+
 	def mergeDishes(self, dayNum):
-		dishes = self.menu[dayNum]
+		dishes = self.menu[str(dayNum)]
 		numDishes = len(dishes)
 		if numDishes == 1:
 			merged = dishes[0]

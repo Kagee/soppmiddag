@@ -49,12 +49,16 @@ class SoppParser:
 			# FYI: Formatting text using nonbreaking spaces is a STUPID IDEA!
 			pstr = re.sub(r"\xa0", ' ', pstr) # Remove nonbreaking spaces
 			pstr = re.sub(r"  ", '', pstr) # Remove double spaces
-
+			# Replace all types of br with <br>
+			pstr = re.sub(r"[ ]*<br[ ]*[/]*>[ ]*", r"<br>", pstr)
+			# Make sure there is a spare for each <br>, so we get spaces
+			# when <br>'s are removed later
+			pstr = re.sub(r"<br>", r" <br>", pstr)
 			# Insert a newline before any capital characters 
-			# after a <br>|<br />|<br/>. This seems like the best way to 
-			# differenciate between <br>s because the name of the dish 
+			# after a <br>. This seems like the best way to 
+			# differenciate between <br>s because the name of the dish
 			# was to long, and <br>s to indicate a new dish
-			pstr = re.sub(r"<br[ ]*[/]*>[ ]*([A-Z\xC6\xD8\xC5])", r"\n\1", pstr)
+			pstr = re.sub(r"<br>([A-Z\xC6\xD8\xC5])", r"\n\1", pstr)
 			pel = lxml.html.fromstring(pstr); # Convert back to HTML/lxml
 			# Get only the text content (removing any tag)
 			ptext = pel.text_content()

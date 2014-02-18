@@ -1,11 +1,11 @@
 import config # config variables
 import webapp2 # serving web content via gae
-import SoppParser # parser for sopp.no
+from SoppParser import SoppParser # parser for sopp.no
 
 class MainPage(webapp2.RequestHandler):
 	def get(self):
 		self.response.headers['Content-Type'] = 'text/plain'
-		hig = SoppParser.SoppParser(config.SOPP_HIG)
+		hig = SoppParser(config.SOPP_HIG)
 		hig.scrape()
 		hig.extract()
 		hig.verify()

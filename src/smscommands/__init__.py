@@ -1,5 +1,6 @@
 import importlib
 import re
+import logging
 
 def getModule(sms):
 	"""Verifies that the codeword is a valid module name
@@ -17,5 +18,5 @@ def getModule(sms):
 		module = importlib.import_module("." + word, "smscommands")
 		return module
 	except ImportError as e:
-		loggin.info("Module load failed: %s" % (e))
+		logging.info("Module load failed: %s" % (e))
 		return None

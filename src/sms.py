@@ -2,6 +2,7 @@ import webapp2
 import logging
 import trh
 import twilio.twiml
+from modsms import getModule
 
 class MainPage(trh.TwilioRequestHandler):
 	def post(self):
@@ -15,6 +16,22 @@ class MainPage(trh.TwilioRequestHandler):
 			self.response.headers['Content-Type'] = 'text/xml'
 			self.response.write(str(resp))
 
+class TestSMS(webapp2.RequestHandler):
+	def get(self):
+		#self.response.headers['Content-Type'] = 'text/xml'
+		#resp = twilio.twiml.Response()
+		sms = self.request.get("sms")
+		module = getModule(sms)
+		if module:
+			self.response.write("SMS: <%s>" % (sms))
+		else:
+			print sms
+			print module
+			self.response.headers['Content-Type'] = 'text/xml'
+			resp = twilio.twiml.Response()
+			resp.message(u"Ukjent kodeord. Send HJELP for hjelp")
+			self.response.write(str(resp))
+
 application = webapp2.WSGIApplication([
-    ('/sms', MainPage),
+    ('/sms', TestSMS),
 ], debug=True)

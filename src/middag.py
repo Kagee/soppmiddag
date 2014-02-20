@@ -1,3 +1,6 @@
-def handle(string):
-	print "Middag i dag er %s" % (string)
-	return "Return middag i dag er %s" % (string)
+import twilio.twiml
+
+def handle(sms):
+	resp = twilio.twiml.Response()
+	resp.message(u"No dinner for you!")
+	return resp

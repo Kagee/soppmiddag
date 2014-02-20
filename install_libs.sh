@@ -3,7 +3,9 @@ sudo apt-get install python-pip
 sudo pip install virtualenv
 # Check if folder exsists, and act
 # accordingly
-virtualenv --distribute venv
+if [ ! -d "venv" ]; then
+    virtualenv --distribute venv
+fi
 source venv/bin/activate
 pip install twilio
 pip install cssselect

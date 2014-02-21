@@ -10,7 +10,7 @@ class TwilioRequestHandler(webapp2.RequestHandler):
 	def valid(self):
 		url = self.request.url
 		logging.info("Validating url:" + url)
-		validator = RequestValidator(config.AUTH_TOKEN)
+		validator = RequestValidator(secrets.AUTH_TOKEN)
 		params = {}
 		logging.info("Validating parameters: ")
 		for name in self.request.arguments():

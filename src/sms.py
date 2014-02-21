@@ -23,10 +23,16 @@ class MainPage(trh.TwilioRequestHandler):
 			self.response.set_staus(400, "Request failed validation")
 		else:
 			logging.info("SMS validated: %s" % (self.request.get("MessageSid")))
-			resp = twilio.twiml.Response()
-			resp.message("Denne funksjonen er ikke klar")
 			self.response.headers['Content-Type'] = 'text/xml'
-			self.response.write(str(resp))
+			sms = self.request.get("Body")
+			module = getModule(sms)
+			if module:
+				self.response.write(module.handle(sms))
+			else:
+				resp = twilio.twiml.Response()
+				logging.info("Ukjent kodeord: %s" % (sms))
+				resp.message("Ukjent kodeord. Send HJELP for hjelp.")
+				self.response.write(str(resp))
 
 application = webapp2.WSGIApplication([
 	('/sms', SMS),

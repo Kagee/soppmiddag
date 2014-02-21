@@ -69,7 +69,12 @@ class SoppParser:
 			# The day of week and first dish is on the 
 			# same line,  but separated by a colon
 			day, lines[0] = lines[0].split(":")
-			dishes = [line.strip().replace("m/", "med ") for line in lines] # Remove extra whitespace around text.
+			dishes = []
+			for line in lines:
+				line = line.strip().replace("m/", "med ")
+				if len(line): # ugly hack around parsing errors
+					dishes.append(line)
+
 			logging.debug(day + ":" + " eller ".join(dishes))
 			# We use str(int) so we can save and retrive as json
 			self.menu[str(weekday)] = dishes;

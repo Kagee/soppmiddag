@@ -7,9 +7,11 @@ from datetime import datetime, timedelta# To check the weekday
 def handle(sms):
 	resp = twilio.twiml.Response()
 
+	# this will be an hour or two off (because it is UTC)
+	# But let's assume nobody will check todays dish between 22:00 and 02:00
 	weekday = datetime.now().weekday()
 	if weekday > 4:
-		msg = u"Det serveres ikke middag i kantinen p\u00E5 HiG p\u00E5 %s" % (u"l\u00D8rdag" if weeekday == 5 else  u"s\u00D8ndag")
+		msg = u"Det serveres ikke middag i kantinen p\u00E5 HiG p\u00E5 %s" % (u"l\u00F8rdag" if weekday == 5 else  u"s\u00F8ndag")
 		resp.message(msg)
 	else:
 		hig = SoppParser(config.SOPP_HIG)
@@ -26,4 +28,4 @@ def handle(sms):
 			w = WeekMenu(school='hig', source=hig.getSourceText(), menu=hig.getMenu())
 			w.put()
 		resp.message(hig.mergeDishes(weekday))
-		return resp
+	return resp

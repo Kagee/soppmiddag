@@ -4,20 +4,7 @@ import trh
 import twilio.twiml
 from smscommands import getModule
 
-class SMS(webapp2.RequestHandler):
-	def get(self):
-		self.response.headers['Content-Type'] = 'text/xml'
-		sms = self.request.get("sms")
-		module = getModule(sms)
-		if module:
-			self.response.write(module.handle(sms))
-		else:
-			resp = twilio.twiml.Response()
-			logging.info("Ukjent kodeord: %s" % (sms))
-			resp.message("Ukjent kodeord. Send HJELP for hjelp.")
-			self.response.write(str(resp))
-
-class MainPage(trh.TwilioRequestHandler):
+class sms(trh.TwilioRequestHandler):
 	def post(self):
 		if not self.valid():
 			self.response.set_staus(400, "Request failed validation")
@@ -35,5 +22,5 @@ class MainPage(trh.TwilioRequestHandler):
 				self.response.write(str(resp))
 
 application = webapp2.WSGIApplication([
-	('/sms', SMS),
+	('/sms', sms),
 ], debug=True)

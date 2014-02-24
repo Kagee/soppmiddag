@@ -39,7 +39,7 @@ class SoppParser:
 				"dinnerDiv, this might be a problem.")
 		# Get a list of <p> elements inside div
 		self.plist = dinnerDiv[0].cssselect("p")
-		assert len(self.plist) == 5, "Got only %s <p>'s, expected 5" % len(ps)  
+		#assert len(self.plist) == 5, "Got only %s <p>'s, expected 5" % len(ps)  
 		
 	def parse(self):
 		h = HTMLParser.HTMLParser() # to resolve HTML entities
